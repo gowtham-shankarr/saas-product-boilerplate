@@ -18,7 +18,7 @@ A comprehensive, production-ready monorepo for building modern SaaS applications
 ## 📁 Project Structure
 
 ```
-our-product-boilerplate/
+saas-product-boilerplate/
 ├── apps/
 │   ├── web/                 # Main Next.js application
 │   └── admin/              # Internal admin console (port 3001)
@@ -53,8 +53,8 @@ our-product-boilerplate/
 
 ```bash
 # Clone the repository
-git clone <your-repo-url>
-cd our-product-boilerplate
+git clone <ysaas-repo-url>
+cd saas-product-boilerplate
 
 # Install dependencies (this installs everything for all packages and apps)
 pnpm install
@@ -109,7 +109,7 @@ pnpm --filter admin dev      # Only admin app on http://localhost:3001
 ### Root Level Commands
 
 ```bash
-# Development (from root folder - our-product-boilerplate/)
+# Development (from root folder - saas-product-boilerplate/)
 pnpm dev                    # Start ALL apps simultaneously (web + admin)
 pnpm dev --concurrency 15   # Start with custom concurrency
 
@@ -353,8 +353,8 @@ Required for production:
 
 ```bash
 DATABASE_URL=postgresql://...
-NEXTAUTH_SECRET=your-secret-key
-NEXTAUTH_URL=https://your-domain.com
+NEXTAUTH_SECRET=ysaas-secret-key
+NEXTAUTH_URL=https://ysaas-domain.com
 ```
 
 ### Database Migration
@@ -431,7 +431,7 @@ This monorepo is optimized for Vercel deployment. See the complete deployment gu
    ```bash
    DATABASE_URL=your_postgres_connection_string
    NEXTAUTH_SECRET=your_secret_key
-   NEXTAUTH_URL=https://your-domain.vercel.app
+   NEXTAUTH_URL=https://ysaas-domain.vercel.app
    ```
 
 3. **Deploy**: Click deploy and you're live! 🎉

@@ -6,16 +6,15 @@ import { withCSRF } from "@/lib/csrf-server";
 
 async function deleteOrganization(
   request: NextRequest,
-  { params }: { params: { orgId: string } }
+  { params }: { params: Promise<{ orgId: string }> }
 ) {
   try {
+    const { orgId } = await params;
     const session = await getServerSession(authOptions);
 
     if (!session?.user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-
-    const { orgId } = params;
 
     // Check if user has permission to delete this organization
     const membership = await db.membership.findFirst({

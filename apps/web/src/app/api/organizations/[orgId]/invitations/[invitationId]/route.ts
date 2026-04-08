@@ -6,9 +6,10 @@ import { EmailService } from "@/lib/email";
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { orgId: string; invitationId: string } }
+  { params }: { params: Promise<{ orgId: string; invitationId: string }> }
 ) {
   try {
+    const { orgId } = await params;
     const session = await getServerSession(authOptions);
 
     if (!session?.user?.id) {
@@ -18,7 +19,7 @@ export async function POST(
     // Check if user is a member of this organization with admin/owner role
     const userMembership = await db.membership.findFirst({
       where: {
-        orgId: params.orgId,
+        orgId,
         userId: session.user.id,
         role: { in: ["owner", "admin"] },
       },
@@ -54,9 +55,10 @@ export async function POST(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { orgId: string; invitationId: string } }
+  { params }: { params: Promise<{ orgId: string; invitationId: string }> }
 ) {
   try {
+    const { orgId, invitationId } = await params;
     const session = await getServerSession(authOptions);
 
     if (!session?.user?.id) {
@@ -66,7 +68,7 @@ export async function DELETE(
     // Check if user is a member of this organization with admin/owner role
     const userMembership = await db.membership.findFirst({
       where: {
-        orgId: params.orgId,
+        orgId,
         userId: session.user.id,
         role: { in: ["owner", "admin"] },
       },
@@ -82,8 +84,8 @@ export async function DELETE(
     // Check if invitation exists and belongs to this organization
     const invitation = await db.invitation.findFirst({
       where: {
-        id: params.invitationId,
-        orgId: params.orgId,
+        id: invitationId,
+        orgId,
         status: "pending",
       },
     });
@@ -97,7 +99,7 @@ export async function DELETE(
 
     // Update invitation status to cancelled
     await db.invitation.update({
-      where: { id: params.invitationId },
+      where: { id: invitationId },
       data: { status: "cancelled" },
     });
 

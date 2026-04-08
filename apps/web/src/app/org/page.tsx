@@ -27,6 +27,5 @@ export default async function OrganizationPage() {
     redirect("/dashboard");
   }
 
-  // Redirect to the first organization's settings
-  redirect(`/${user.memberships[0].organization.id}/settings`);
+  redirect("/settings");
 }

@@ -13,12 +13,12 @@ import {
 import { Icon } from "@acmecorp/icons";
 
 interface InvitationAcceptPageProps {
-  searchParams: {
+  searchParams: Promise<{
     email?: string;
     org?: string;
     role?: string;
     token?: string;
-  };
+  }>;
 }
 
 export default async function InvitationAcceptPage({
@@ -30,7 +30,7 @@ export default async function InvitationAcceptPage({
     redirect("/auth/signin");
   }
 
-  const { email, org, role, token } = searchParams;
+  const { email, org, role, token } = await searchParams;
 
   if (!email || !org || !role) {
     return (

@@ -10,9 +10,10 @@ const updateMemberSchema = z.object({
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { orgId: string; memberId: string } }
+  { params }: { params: Promise<{ orgId: string; memberId: string }> }
 ) {
   try {
+    const { orgId, memberId } = await params;
     const session = await getServerSession(authOptions);
 
     if (!session?.user?.id) {
@@ -25,7 +26,7 @@ export async function PUT(
     // Check if user is a member of this organization with admin/owner role
     const userMembership = await db.membership.findFirst({
       where: {
-        orgId: params.orgId,
+        orgId,
         userId: session.user.id,
         role: { in: ["owner", "admin"] },
       },
@@ -40,7 +41,7 @@ export async function PUT(
 
     // Check if target member exists
     const targetMembership = await db.membership.findUnique({
-      where: { id: params.memberId },
+      where: { id: memberId },
       include: {
         organization: { select: { id: true } },
       },
@@ -48,7 +49,7 @@ export async function PUT(
 
     if (
       !targetMembership ||
-      targetMembership.organization.id !== params.orgId
+      targetMembership.organization.id !== orgId
     ) {
       return NextResponse.json({ error: "Member not found" }, { status: 404 });
     }
@@ -63,7 +64,7 @@ export async function PUT(
 
     // Update member role
     const updatedMembership = await db.membership.update({
-      where: { id: params.memberId },
+      where: { id: memberId },
       data: { role: validatedData.role },
       include: {
         user: {
@@ -104,9 +105,10 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { orgId: string; memberId: string } }
+  { params }: { params: Promise<{ orgId: string; memberId: string }> }
 ) {
   try {
+    const { orgId, memberId } = await params;
     const session = await getServerSession(authOptions);
 
     if (!session?.user?.id) {
@@ -116,7 +118,7 @@ export async function DELETE(
     // Check if user is a member of this organization with admin/owner role
     const userMembership = await db.membership.findFirst({
       where: {
-        orgId: params.orgId,
+        orgId,
         userId: session.user.id,
         role: { in: ["owner", "admin"] },
       },
@@ -131,7 +133,7 @@ export async function DELETE(
 
     // Check if target member exists
     const targetMembership = await db.membership.findUnique({
-      where: { id: params.memberId },
+      where: { id: memberId },
       include: {
         organization: { select: { id: true } },
       },
@@ -139,7 +141,7 @@ export async function DELETE(
 
     if (
       !targetMembership ||
-      targetMembership.organization.id !== params.orgId
+      targetMembership.organization.id !== orgId
     ) {
       return NextResponse.json({ error: "Member not found" }, { status: 404 });
     }
@@ -162,7 +164,7 @@ export async function DELETE(
 
     // Remove member
     await db.membership.delete({
-      where: { id: params.memberId },
+      where: { id: memberId },
     });
 
     return NextResponse.json({

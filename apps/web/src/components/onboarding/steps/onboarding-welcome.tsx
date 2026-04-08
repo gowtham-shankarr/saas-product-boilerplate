@@ -15,66 +15,71 @@ export function OnboardingWelcome({
   loading,
 }: OnboardingWelcomeProps) {
   return (
-    <div className="text-center space-y-6">
-      <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto">
-        <Icon name="zap" className="w-8 h-8 text-blue-600" />
+    <div className="space-y-5 text-center">
+      <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
+        <Icon name="zap" className="h-5 w-5 text-primary" />
       </div>
 
-      <div className="space-y-2">
-        <h3 className="text-2xl font-bold text-gray-900">
-          Welcome to Your SaaS Platform!
+      <div className="space-y-1.5">
+        <h3 className="text-base font-semibold text-foreground">
+          You&apos;re in
         </h3>
-        <p className="text-gray-600 max-w-md mx-auto">
-          We're excited to have you on board. Let's get you set up in just a few
-          minutes.
+        <p className="mx-auto max-w-sm text-xs leading-relaxed text-muted-foreground">
+          We&apos;ll walk through workspace setup in under two minutes.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-2xl mx-auto">
-        <div className="text-center p-4 rounded-lg bg-gray-50">
-          <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-2">
-            <Icon name="users" className="w-4 h-4 text-blue-600" />
+      <div className="grid gap-2 text-left sm:grid-cols-3">
+        {[
+          {
+            icon: "users" as const,
+            title: "Organization",
+            desc: "Name your workspace",
+          },
+          {
+            icon: "user" as const,
+            title: "Profile",
+            desc: "Optional details",
+          },
+          {
+            icon: "mail" as const,
+            title: "Invite",
+            desc: "Add teammates",
+          },
+        ].map((item) => (
+          <div
+            key={item.title}
+            className="rounded-lg border border-border/80 bg-muted/30 px-3 py-2.5"
+          >
+            <div className="mb-1 flex items-center gap-2">
+              <Icon name={item.icon} className="h-3.5 w-3.5 text-primary" />
+              <span className="text-xs font-medium text-foreground">
+                {item.title}
+              </span>
+            </div>
+            <p className="text-[11px] text-muted-foreground">{item.desc}</p>
           </div>
-          <h4 className="font-medium text-gray-900">Set Up Organization</h4>
-          <p className="text-sm text-gray-500">Configure your workspace</p>
-        </div>
-
-        <div className="text-center p-4 rounded-lg bg-gray-50">
-          <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-2">
-            <Icon name="user" className="w-4 h-4 text-green-600" />
-          </div>
-          <h4 className="font-medium text-gray-900">Complete Profile</h4>
-          <p className="text-sm text-gray-500">Add your information</p>
-        </div>
-
-        <div className="text-center p-4 rounded-lg bg-gray-50">
-          <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-2">
-            <Icon name="users" className="w-4 h-4 text-purple-600" />
-          </div>
-          <h4 className="font-medium text-gray-900">Invite Team</h4>
-          <p className="text-sm text-gray-500">Get your team onboard</p>
-        </div>
+        ))}
       </div>
 
-      <div className="pt-4">
-        <Button
-          onClick={() => onComplete()}
-          disabled={loading}
-          className="w-full sm:w-auto"
-        >
-          {loading ? (
-            <>
-              <Icon name="refresh-cw" className="w-4 h-4 mr-2 animate-spin" />
-              Getting Started...
-            </>
-          ) : (
-            <>
-              Get Started
-              <Icon name="arrow-right" className="w-4 h-4 ml-2" />
-            </>
-          )}
-        </Button>
-      </div>
+      <Button
+        onClick={() => onComplete()}
+        disabled={loading}
+        className="w-full sm:w-auto"
+        size="sm"
+      >
+        {loading ? (
+          <>
+            <Icon name="refresh-cw" className="h-3.5 w-3.5 animate-spin" />
+            Starting…
+          </>
+        ) : (
+          <>
+            Continue
+            <Icon name="arrow-right" className="h-3.5 w-3.5" />
+          </>
+        )}
+      </Button>
     </div>
   );
 }

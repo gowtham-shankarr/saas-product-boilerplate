@@ -65,20 +65,16 @@ export default async function ProfilePage() {
             </Breadcrumb>
           </div>
         </header>
-        <div className="flex flex-1 flex-col gap-6 p-6 pt-0">
-          {/* Header */}
-          <div className="space-y-2">
-            <h1 className="text-3xl font-bold tracking-tight">
-              Profile Settings
-            </h1>
-            <p className="text-muted-foreground">
-              Manage your account settings and preferences.
+        <div className="flex flex-1 flex-col gap-4 p-4 pt-0 sm:gap-5 sm:p-6">
+          <div className="space-y-1">
+            <h1 className="text-xl font-semibold tracking-tight">Profile</h1>
+            <p className="max-w-lg text-sm text-muted-foreground">
+              Account details, password, and preferences.
             </p>
           </div>
 
-          {/* Profile Form */}
-          <div className="rounded-xl border bg-card p-6">
-            <h3 className="text-lg font-semibold mb-4">Profile Information</h3>
+          <div className="rounded-xl border border-border/80 bg-card p-5">
+            <h3 className="mb-3 text-sm font-semibold">Information</h3>
             <ProfileForm
               user={{
                 id: user.id,
@@ -90,14 +86,14 @@ export default async function ProfilePage() {
           </div>
 
           {/* Password Change */}
-          <div className="rounded-xl border bg-card p-6">
-            <h3 className="text-lg font-semibold mb-4">Change Password</h3>
+          <div className="rounded-xl border border-border/80 bg-card p-5">
+            <h3 className="mb-3 text-sm font-semibold">Password</h3>
             <PasswordChangeForm />
           </div>
 
           {/* Account Settings */}
-          <div className="rounded-xl border bg-card p-6">
-            <h3 className="text-lg font-semibold mb-4">Account Settings</h3>
+          <div className="rounded-xl border border-border/80 bg-card p-5">
+            <h3 className="mb-3 text-sm font-semibold">Account</h3>
             <AccountSettingsForm
               user={{
                 id: user.id,
@@ -109,9 +105,9 @@ export default async function ProfilePage() {
           </div>
 
           {/* Danger Zone */}
-          <div className="rounded-xl border border-destructive/20 bg-card p-6">
-            <h3 className="text-lg font-semibold mb-4 text-destructive">
-              Danger Zone
+          <div className="rounded-xl border border-destructive/25 bg-card p-5">
+            <h3 className="mb-3 text-sm font-semibold text-destructive">
+              Danger zone
             </h3>
             <DangerZone user={user} />
           </div>

@@ -17,7 +17,10 @@ const ALLOWED_ORIGINS = [
 ];
 
 function getRateLimitKey(request: NextRequest): string {
-  const ip = request.ip || request.headers.get("x-forwarded-for") || "unknown";
+  const forwarded = request.headers.get("x-forwarded-for");
+  const ip = forwarded
+    ? forwarded.split(",")[0]?.trim() || "unknown"
+    : request.headers.get("x-real-ip") || "unknown";
   const path = request.nextUrl.pathname;
   return `${ip}:${path}`;
 }

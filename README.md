@@ -8,7 +8,7 @@ A comprehensive, production-ready monorepo for building modern SaaS applications
 - **Runtime**: Node.js 20+
 - **Package Manager**: pnpm workspaces
 - **Monorepo Orchestrator**: Turborepo
-- **Frontend**: Next.js 14 (App Router, RSC, Server Actions)
+- **Frontend**: Next.js 16 (App Router, RSC, Server Actions)
 - **Styling**: Tailwind CSS + shadcn/ui
 - **Database**: PostgreSQL with Prisma ORM
 - **Validation**: Zod

@@ -254,7 +254,7 @@ NEXT_PUBLIC_APP_DESCRIPTION="${productName} - Your SaaS Solution"
 # ========================================
 # SECURITY & ENCRYPTION
 # ========================================
-ENCRYPTION_KEY="${Math.random().toString(36).substring(2, 15)}"
+ENCRYPTION_SECRET="${Math.random().toString(36).substring(2, 15)}"
 JWT_SECRET="${Math.random().toString(36).substring(2, 15)}"
 COOKIE_SECRET="${Math.random().toString(36).substring(2, 15)}"
 

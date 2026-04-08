@@ -8,6 +8,14 @@ interface OnboardingProgressProps {
   progress?: any;
 }
 
+const STEP_LABELS = [
+  "Welcome",
+  "Organization",
+  "Profile",
+  "Tour",
+  "Invite",
+];
+
 export function OnboardingProgress({
   currentStep,
   totalSteps,
@@ -26,87 +34,79 @@ export function OnboardingProgress({
     return "pending";
   };
 
-  const getStepIcon = (stepIndex: number) => {
-    const status = getStepStatus(stepIndex);
-
-    switch (status) {
-      case "completed":
-        return <Icon name="check" className="w-4 h-4 text-white" />;
-      case "skipped":
-        return <Icon name="arrow-right" className="w-4 h-4 text-gray-400" />;
-      case "current":
-        return (
-          <span className="text-sm font-medium text-white">
-            {stepIndex + 1}
-          </span>
-        );
-      default:
-        return (
-          <span className="text-sm font-medium text-gray-500">
-            {stepIndex + 1}
-          </span>
-        );
-    }
-  };
-
-  const getStepColor = (stepIndex: number) => {
-    const status = getStepStatus(stepIndex);
-
-    switch (status) {
-      case "completed":
-        return "bg-green-500 border-green-500";
-      case "skipped":
-        return "bg-gray-300 border-gray-300";
-      case "current":
-        return "bg-blue-500 border-blue-500";
-      default:
-        return "bg-white border-gray-300";
-    }
-  };
-
   return (
-    <div className="px-6 py-4 border-b bg-gray-50">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          {Array.from({ length: totalSteps }, (_, index) => (
-            <div key={index} className="flex items-center gap-2">
+    <div className="border-b border-border/80 bg-muted/20 px-4 py-3">
+      <div className="mb-2 flex items-center justify-between gap-2">
+        <span className="text-[11px] font-medium text-muted-foreground">
+          Step {currentStep + 1} of {totalSteps}
+        </span>
+        <span className="truncate text-[11px] font-medium text-foreground">
+          {STEP_LABELS[currentStep]}
+        </span>
+      </div>
+      <div
+        className="flex items-center gap-1"
+        role="list"
+        aria-label="Onboarding progress"
+      >
+        {Array.from({ length: totalSteps }, (_, index) => {
+          const status = getStepStatus(index);
+          const isDone = status === "completed";
+          const isCurrent = status === "current";
+          const isSkipped = status === "skipped";
+
+          return (
+            <div key={index} className="flex min-w-0 flex-1 items-center gap-1">
               <div
-                className={`w-8 h-8 rounded-full border-2 flex items-center justify-center ${getStepColor(index)}`}
+                role="listitem"
+                className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[10px] font-semibold transition-colors ${
+                  isDone
+                    ? "bg-primary text-primary-foreground"
+                    : isCurrent
+                      ? "bg-primary/15 text-primary ring-2 ring-primary ring-offset-1 ring-offset-card"
+                      : isSkipped
+                        ? "bg-muted text-muted-foreground"
+                        : "border border-border bg-background text-muted-foreground"
+                }`}
               >
-                {getStepIcon(index)}
+                {isDone ? (
+                  <Icon name="check" className="h-3 w-3" />
+                ) : isSkipped ? (
+                  <Icon name="arrow-right" className="h-3 w-3 opacity-70" />
+                ) : (
+                  index + 1
+                )}
               </div>
               {index < totalSteps - 1 && (
                 <div
-                  className={`w-8 h-0.5 ${getStepStatus(index) === "completed" ? "bg-green-500" : "bg-gray-300"}`}
+                  className={`h-px min-w-[2px] flex-1 rounded-full ${
+                    isDone ? "bg-primary/50" : "bg-border"
+                  }`}
+                  aria-hidden
                 />
               )}
             </div>
-          ))}
-        </div>
-
-        <div className="text-sm text-gray-500">
-          Step {currentStep + 1} of {totalSteps}
-        </div>
+          );
+        })}
       </div>
-
-      {/* Step Labels */}
-      <div className="flex items-center justify-between mt-3">
-        {["Welcome", "Organization", "Profile", "Tour", "Invite"].map(
-          (label, index) => (
-            <div
-              key={index}
-              className={`text-xs font-medium ${
-                getStepStatus(index) === "current"
-                  ? "text-blue-600"
-                  : getStepStatus(index) === "completed"
-                    ? "text-green-600"
-                    : "text-gray-400"
+      <div className="mt-2 hidden gap-1 sm:flex sm:justify-between">
+        {STEP_LABELS.map((label, index) => {
+          const status = getStepStatus(index);
+          return (
+            <span
+              key={label}
+              className={`max-w-[4.5rem] truncate text-center text-[10px] font-medium leading-tight ${
+                status === "current"
+                  ? "text-primary"
+                  : status === "completed"
+                    ? "text-muted-foreground"
+                    : "text-muted-foreground/70"
               }`}
             >
               {label}
-            </div>
-          )
-        )}
+            </span>
+          );
+        })}
       </div>
     </div>
   );

@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { ChevronDown, Building2, Plus, Users } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,9 +10,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { CreateOrganizationDialog } from "./organization/create-organization-dialog";
 import {
   SidebarMenu,
   SidebarMenuButton,
@@ -21,6 +17,7 @@ import {
   useSidebar,
 } from "@acmecorp/ui";
 import { Icon } from "@acmecorp/icons";
+import { CreateOrganizationDialog } from "@/components/organization/create-organization-dialog";
 
 interface Organization {
   id: string;
@@ -41,7 +38,6 @@ export function OrganizationSwitcher() {
   const [currentOrg, setCurrentOrg] = useState<Organization | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showCreateDialog, setShowCreateDialog] = useState(false);
-
   useEffect(() => {
     if (session?.user?.id) {
       fetchOrganizations();
@@ -105,15 +101,6 @@ export function OrganizationSwitcher() {
     }
   };
 
-  const handleCreateOrg = () => {
-    setShowCreateDialog(true);
-  };
-
-  const onOrgCreated = (newOrg: Organization) => {
-    setShowCreateDialog(false);
-    fetchOrganizations(); // Refresh the list
-  };
-
   const { isMobile } = useSidebar();
 
   if (isLoading) {
@@ -135,7 +122,7 @@ export function OrganizationSwitcher() {
 
   return (
     <>
-      <SidebarMenu>
+    <SidebarMenu>
         <SidebarMenuItem>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -191,13 +178,15 @@ export function OrganizationSwitcher() {
                 </DropdownMenuItem>
               ))}
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleCreateOrg} className="gap-2 p-2">
+              <DropdownMenuItem
+                onClick={() => setShowCreateDialog(true)}
+                className="gap-2 p-2"
+              >
                 <div className="flex size-6 items-center justify-center rounded-md border bg-background">
                   <Icon name="plus" size={16} />
                 </div>
-                <div className="font-medium">Create New Organization</div>
+                <div className="font-medium">Create organization</div>
               </DropdownMenuItem>
-              <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={() => (window.location.href = "/organizations")}
                 className="gap-2 p-2"
@@ -211,11 +200,29 @@ export function OrganizationSwitcher() {
           </DropdownMenu>
         </SidebarMenuItem>
       </SidebarMenu>
-
       <CreateOrganizationDialog
         open={showCreateDialog}
         onOpenChange={setShowCreateDialog}
-        onOrgCreated={onOrgCreated}
+        onOrgCreated={async (newOrg) => {
+          setShowCreateDialog(false);
+          if (!newOrg?.id) {
+            await fetchOrganizations();
+            return;
+          }
+          try {
+            const res = await fetch("/api/organizations/switch", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ orgId: newOrg.id }),
+            });
+            if (res.ok) {
+              await update({ orgId: newOrg.id });
+            }
+          } catch {
+            /* reload still refreshes list */
+          }
+          window.location.reload();
+        }}
       />
     </>
   );

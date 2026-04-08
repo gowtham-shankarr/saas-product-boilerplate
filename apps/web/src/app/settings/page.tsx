@@ -120,12 +120,11 @@ export default async function SettingsPage() {
               </Breadcrumb>
             </div>
           </header>
-          <div className="flex flex-1 flex-col gap-6 p-6 pt-0">
-            {/* Header */}
-            <div className="space-y-2">
-              <h1 className="text-3xl font-bold tracking-tight">Settings</h1>
-              <p className="text-muted-foreground">
-                Manage your organization settings
+          <div className="flex flex-1 flex-col gap-4 p-4 pt-0 sm:gap-5 sm:p-6">
+            <div className="space-y-1">
+              <h1 className="text-xl font-semibold tracking-tight">Settings</h1>
+              <p className="max-w-lg text-sm text-muted-foreground">
+                Organization details, team, and billing.
               </p>
             </div>
 
@@ -141,9 +140,9 @@ export default async function SettingsPage() {
               <TabsContent value="general" className="space-y-6">
                 <Card>
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Building2 className="h-5 w-5" />
-                      Organization Information
+                    <CardTitle className="flex items-center gap-2 text-base">
+                      <Building2 className="h-4 w-4 text-muted-foreground" />
+                      Organization
                     </CardTitle>
                     <CardDescription>
                       Update your organization details
@@ -210,9 +209,9 @@ export default async function SettingsPage() {
               <TabsContent value="pricing" className="space-y-6">
                 <Card>
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <CreditCard className="h-5 w-5" />
-                      Pricing Plans
+                    <CardTitle className="flex items-center gap-2 text-base">
+                      <CreditCard className="h-4 w-4 text-muted-foreground" />
+                      Pricing
                     </CardTitle>
                     <CardDescription>
                       Choose the best plan for your organization
@@ -254,9 +253,9 @@ export default async function SettingsPage() {
               <TabsContent value="security" className="space-y-6">
                 <Card>
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Shield className="h-5 w-5" />
-                      Security Settings
+                    <CardTitle className="flex items-center gap-2 text-base">
+                      <Shield className="h-4 w-4 text-muted-foreground" />
+                      Security
                     </CardTitle>
                     <CardDescription>
                       Manage security settings for your organization

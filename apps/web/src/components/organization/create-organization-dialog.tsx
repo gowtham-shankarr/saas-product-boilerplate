@@ -98,16 +98,24 @@ export function CreateOrganizationDialog({
     }
   };
 
+  const controlled = open !== undefined;
+  const triggerNode =
+    trigger !== undefined && trigger !== null && trigger !== false
+      ? trigger
+      : controlled
+        ? null
+        : (
+            <Button>
+              <Icon name="plus" className="mr-2 h-4 w-4" />
+              Create Organization
+            </Button>
+          );
+
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-      <DialogTrigger asChild>
-        {trigger || (
-          <Button>
-            <Icon name="plus" className="mr-2 h-4 w-4" />
-            Create Organization
-          </Button>
-        )}
-      </DialogTrigger>
+      {triggerNode ? (
+        <DialogTrigger asChild>{triggerNode}</DialogTrigger>
+      ) : null}
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Create New Organization</DialogTitle>

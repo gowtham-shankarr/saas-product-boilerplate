@@ -13,9 +13,10 @@ const invitationSchema = z.object({
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { orgId: string } }
+  { params }: { params: Promise<{ orgId: string }> }
 ) {
   try {
+    const { orgId } = await params;
     const session = await getServerSession(authOptions);
 
     if (!session?.user?.id) {
@@ -25,7 +26,7 @@ export async function GET(
     // Check if user is a member of this organization
     const userMembership = await db.membership.findFirst({
       where: {
-        orgId: params.orgId,
+        orgId,
         userId: session.user.id,
       },
     });
@@ -40,7 +41,7 @@ export async function GET(
     // Get pending invitations
     const invitations = await db.invitation.findMany({
       where: {
-        orgId: params.orgId,
+        orgId,
         status: "pending",
       },
       orderBy: {
@@ -69,9 +70,10 @@ export async function GET(
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { orgId: string } }
+  { params }: { params: Promise<{ orgId: string }> }
 ) {
   try {
+    const { orgId } = await params;
     const session = await getServerSession(authOptions);
 
     if (!session?.user?.id) {
@@ -84,7 +86,7 @@ export async function POST(
     // Check if user is a member of this organization with admin/owner role
     const userMembership = await db.membership.findFirst({
       where: {
-        orgId: params.orgId,
+        orgId,
         userId: session.user.id,
         role: { in: ["owner", "admin"] },
       },
@@ -103,7 +105,7 @@ export async function POST(
       include: {
         memberships: {
           where: {
-            orgId: params.orgId,
+            orgId,
           },
         },
       },
@@ -120,7 +122,7 @@ export async function POST(
     const existingInvitation = await db.invitation.findFirst({
       where: {
         email: validatedData.email,
-        orgId: params.orgId,
+        orgId,
         status: "pending",
       },
     });
@@ -134,7 +136,7 @@ export async function POST(
 
     // Get organization and inviter details
     const organization = await db.organization.findUnique({
-      where: { id: params.orgId },
+      where: { id: orgId },
       select: { id: true, name: true },
     });
 
@@ -158,7 +160,7 @@ export async function POST(
     const invitation = await db.invitation.create({
       data: {
         email: validatedData.email,
-        orgId: params.orgId,
+        orgId,
         role: validatedData.role,
         token,
         expiresAt,

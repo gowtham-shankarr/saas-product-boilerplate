@@ -3,6 +3,12 @@
 import { useState } from "react";
 import { Button, Input, Label, Textarea } from "@acmecorp/ui";
 import { Icon } from "@acmecorp/icons";
+import { cn } from "@/lib/utils";
+
+const selectClass = cn(
+  "flex h-9 w-full rounded-md border border-input bg-background px-3 py-1.5 text-sm",
+  "shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+);
 
 interface OnboardingOrganizationProps {
   onComplete: (data?: any) => void;
@@ -32,52 +38,59 @@ export function OnboardingOrganization({
   };
 
   return (
-    <div className="space-y-6">
-      <div className="text-center space-y-2">
-        <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto">
-          <Icon name="users" className="w-6 h-6 text-blue-600" />
+    <div className="space-y-5">
+      <div className="text-center">
+        <div className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
+          <Icon name="users" className="h-4 w-4 text-primary" />
         </div>
-        <h3 className="text-xl font-semibold text-gray-900">
-          Set Up Your Organization
+        <h3 className="text-base font-semibold text-foreground">
+          Organization
         </h3>
-        <p className="text-gray-600">
-          Tell us about your organization to personalize your experience.
+        <p className="mt-1 text-xs text-muted-foreground">
+          Used for billing and team access.
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="name">Organization Name *</Label>
+      <form onSubmit={handleSubmit} className="space-y-3 text-left">
+        <div className="space-y-1.5">
+          <Label htmlFor="name" className="text-xs">
+            Name <span className="text-destructive">*</span>
+          </Label>
           <Input
             id="name"
             value={formData.name}
             onChange={(e) => handleInputChange("name", e.target.value)}
-            placeholder="Enter your organization name"
+            placeholder="Acme Inc."
             required
           />
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="description">Description</Label>
+        <div className="space-y-1.5">
+          <Label htmlFor="description" className="text-xs">
+            Description
+          </Label>
           <Textarea
             id="description"
             value={formData.description}
             onChange={(e) => handleInputChange("description", e.target.value)}
-            placeholder="Brief description of your organization"
-            rows={3}
+            placeholder="What does your team do?"
+            rows={2}
+            className="min-h-[4rem] resize-none text-sm"
           />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="industry">Industry</Label>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <div className="space-y-1.5">
+            <Label htmlFor="industry" className="text-xs">
+              Industry
+            </Label>
             <select
               id="industry"
               value={formData.industry}
               onChange={(e) => handleInputChange("industry", e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className={selectClass}
             >
-              <option value="">Select industry</option>
+              <option value="">Select…</option>
               <option value="technology">Technology</option>
               <option value="healthcare">Healthcare</option>
               <option value="finance">Finance</option>
@@ -89,43 +102,44 @@ export function OnboardingOrganization({
             </select>
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="teamSize">Team Size</Label>
+          <div className="space-y-1.5">
+            <Label htmlFor="teamSize" className="text-xs">
+              Team size
+            </Label>
             <select
               id="teamSize"
               value={formData.teamSize}
               onChange={(e) => handleInputChange("teamSize", e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className={selectClass}
             >
-              <option value="">Select team size</option>
-              <option value="1-10">1-10 employees</option>
-              <option value="11-50">11-50 employees</option>
-              <option value="51-200">51-200 employees</option>
-              <option value="201-500">201-500 employees</option>
-              <option value="500+">500+ employees</option>
+              <option value="">Select…</option>
+              <option value="1-10">1–10</option>
+              <option value="11-50">11–50</option>
+              <option value="51-200">51–200</option>
+              <option value="201-500">201–500</option>
+              <option value="500+">500+</option>
             </select>
           </div>
         </div>
 
-        <div className="pt-4">
-          <Button
-            type="submit"
-            disabled={loading || !formData.name}
-            className="w-full"
-          >
-            {loading ? (
-              <>
-                <Icon name="refresh-cw" className="w-4 h-4 mr-2 animate-spin" />
-                Setting up...
-              </>
-            ) : (
-              <>
-                Continue
-                <Icon name="arrow-right" className="w-4 h-4 ml-2" />
-              </>
-            )}
-          </Button>
-        </div>
+        <Button
+          type="submit"
+          disabled={loading || !formData.name}
+          className="w-full"
+          size="sm"
+        >
+          {loading ? (
+            <>
+              <Icon name="refresh-cw" className="h-3.5 w-3.5 animate-spin" />
+              Saving…
+            </>
+          ) : (
+            <>
+              Continue
+              <Icon name="arrow-right" className="h-3.5 w-3.5" />
+            </>
+          )}
+        </Button>
       </form>
     </div>
   );

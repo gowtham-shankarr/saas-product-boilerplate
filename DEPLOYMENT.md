@@ -17,17 +17,21 @@ This guide will help you deploy your SaaS Toolkit monorepo to Vercel.
    - Click "New Project"
    - Import your Git repository
 
-2. **Configure Project**:
+2. **Configure Project** (main app at `apps/web`):
 
-   ```
-   Framework Preset: Next.js
-   Root Directory: apps/web
-   Build Command: pnpm build
-   Output Directory: .next
-   Install Command: cd ../.. && pnpm install
-   ```
+   In **Settings → General → Root Directory**, click **Edit** and set:
 
-   **⚠️ IMPORTANT**: Make sure to set the Root Directory to `apps/web` - this is crucial!
+   | Setting | Value |
+   |---------|--------|
+   | **Root Directory** | `apps/web` |
+   | Framework Preset | Next.js (auto-detected from `apps/web/package.json`) |
+   | **Install Command** | `cd ../.. && pnpm install` |
+   | **Build Command** | `pnpm build` (default: runs `next build` in `apps/web`) |
+   | Output Directory | `.next` (leave default) |
+
+   **Why:** The monorepo root `package.json` does **not** depend on `next`; only `apps/web` does. If Root Directory is left as `.` (repository root), Vercel looks for `next` in the wrong `package.json` and fails with **“No Next.js version detected”**.
+
+   For the **admin** app, create a **separate** Vercel project with Root Directory `apps/admin`.
 
 3. **Environment Variables**:
 
@@ -66,20 +70,16 @@ vercel
 
 ## ⚙️ Configuration Files
 
-### vercel.json
+### vercel.json (optional)
+
+This repo keeps optional overrides in **`apps/web/vercel.json`**. Do **not** put `framework: "nextjs"` in a `vercel.json` at the **monorepo root** unless that root `package.json` also lists `next`—that mismatch triggers **“No Next.js version detected”**.
+
+Example for `apps/web` (install from repo root so pnpm workspaces resolve):
 
 ```json
 {
-  "version": 2,
-  "buildCommand": "pnpm build",
-  "installCommand": "pnpm install",
-  "framework": "nextjs",
-  "builds": [
-    {
-      "src": "apps/web/package.json",
-      "use": "@vercel/next"
-    }
-  ]
+  "installCommand": "cd ../.. && pnpm install",
+  "buildCommand": "pnpm build"
 }
 ```
 
@@ -215,8 +215,11 @@ pnpm db:seed
 **Issue**: "Build failed - wrong app detected"
 **Solution**: Use the deployment script: `./deploy.sh` or manually set root directory to `apps/web`
 
-**Issue**: "No Next.js version detected"
-**Solution**: Make sure Root Directory is set to `apps/web` in Vercel project settings
+**Issue**: `No Next.js version detected. Make sure your package.json has "next" in either "dependencies" or "devDependencies". Also check your Root Directory setting matches the directory of your package.json file.`
+**Solution**:
+1. Vercel → your project → **Settings** → **General** → **Root Directory** → set to **`apps/web`** (not `.`).
+2. Redeploy. **Install Command** should remain `cd ../.. && pnpm install` so dependencies install from the monorepo root.
+3. Remove any **root** `vercel.json` that sets `"framework": "nextjs"` while Root Directory is still the repo root (this repo no longer ships that file).
 
 ### Runtime Errors
 

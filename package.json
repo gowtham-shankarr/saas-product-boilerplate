@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "turbo run build",
-    "dev": "turbo run dev",
+    "dev": "turbo run dev --concurrency 20",
     "dev:fast": "cd apps/web && pnpm dev",
     "dev:web": "cd apps/web && pnpm dev",
     "dev:admin": "cd apps/admin && pnpm dev",

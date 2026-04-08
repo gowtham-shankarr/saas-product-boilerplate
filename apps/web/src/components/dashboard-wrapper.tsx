@@ -21,10 +21,10 @@ export function DashboardWrapper({ children }: DashboardWrapperProps) {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="flex items-center gap-2">
-          <Icon name="refresh-cw" className="w-4 h-4 animate-spin" />
-          Loading...
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <Icon name="refresh-cw" className="h-4 w-4 animate-spin" />
+          Loading…
         </div>
       </div>
     );
@@ -34,7 +34,6 @@ export function DashboardWrapper({ children }: DashboardWrapperProps) {
     <>
       {children}
 
-      {/* Onboarding Wizard */}
       {showOnboarding && (
         <OnboardingWizard
           isOpen={showOnboarding}
@@ -43,30 +42,31 @@ export function DashboardWrapper({ children }: DashboardWrapperProps) {
         />
       )}
 
-      {/* Onboarding Reminder Banner */}
       {!showOnboarding && !onboardingCompleted && (
-        <div className="fixed bottom-4 right-4 z-40">
-          <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 max-w-sm">
-            <div className="flex items-start gap-3">
-              <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
-                <Icon name="zap" className="w-4 h-4 text-blue-600" />
+        <div className="fixed bottom-4 right-4 z-40 max-w-[18rem]">
+          <div className="rounded-xl border border-border bg-card p-3.5 shadow-lg shadow-black/5">
+            <div className="flex gap-3">
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10">
+                <Icon name="zap" className="h-3.5 w-3.5 text-primary" />
               </div>
-              <div className="flex-1">
-                <h4 className="font-medium text-gray-900">
-                  Complete Your Setup
-                </h4>
-                <p className="text-sm text-gray-600 mt-1">
-                  Finish setting up your account to get the most out of the
-                  platform.
-                </p>
-                <div className="flex gap-2 mt-3">
-                  <Button size="sm" onClick={openOnboarding} className="flex-1">
-                    Get Started
+              <div className="min-w-0 flex-1 space-y-2">
+                <div>
+                  <p className="text-xs font-semibold text-foreground">
+                    Finish setup
+                  </p>
+                  <p className="mt-0.5 text-[11px] leading-snug text-muted-foreground">
+                    Complete onboarding to unlock the full workspace.
+                  </p>
+                </div>
+                <div className="flex gap-2">
+                  <Button size="sm" onClick={openOnboarding} className="h-8 flex-1 text-xs">
+                    Continue
                   </Button>
                   <Button
                     size="sm"
-                    variant="outline"
+                    variant="ghost"
                     onClick={() => completeOnboarding()}
+                    className="h-8 shrink-0 px-2 text-xs text-muted-foreground"
                   >
                     Dismiss
                   </Button>

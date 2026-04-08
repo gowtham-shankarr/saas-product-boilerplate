@@ -86,17 +86,15 @@ export default async function FormsPage() {
               </Button>
             </div>
           </header>
-          <div className="flex flex-1 flex-col gap-6 p-6 pt-0">
-            {/* Header */}
-            <div className="space-y-2">
-              <h1 className="text-3xl font-bold tracking-tight">Forms</h1>
-              <p className="text-muted-foreground">
-                Create and manage forms for {organization.name}
+          <div className="flex flex-1 flex-col gap-4 p-4 pt-0 sm:gap-5 sm:p-6">
+            <div className="space-y-1">
+              <h1 className="text-xl font-semibold tracking-tight">Forms</h1>
+              <p className="max-w-lg text-sm text-muted-foreground">
+                Forms for {organization.name}.
               </p>
             </div>
 
-            {/* Forms Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
@@ -186,39 +184,30 @@ export default async function FormsPage() {
             </div>
 
             {/* Quick Stats */}
-            <Card className="mt-8">
+            <Card className="mt-4">
               <CardHeader>
-                <CardTitle>Form Analytics</CardTitle>
+                <CardTitle>Analytics</CardTitle>
                 <CardDescription>
-                  Overview of form performance across {organization.name}
+                  Sample metrics for {organization.name}
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                  <div className="text-center">
-                    <div className="text-2xl font-bold">3</div>
-                    <div className="text-sm text-muted-foreground">
-                      Active Forms
+                <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+                  {[
+                    { v: "3", l: "Active forms" },
+                    { v: "1,890", l: "Submissions" },
+                    { v: "94%", l: "Completion" },
+                    { v: "2.3s", l: "Avg. load" },
+                  ].map((s) => (
+                    <div key={s.l} className="rounded-lg border border-border/60 bg-muted/20 py-3 text-center">
+                      <div className="text-lg font-semibold tabular-nums">
+                        {s.v}
+                      </div>
+                      <div className="text-[11px] text-muted-foreground">
+                        {s.l}
+                      </div>
                     </div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold">1,890</div>
-                    <div className="text-sm text-muted-foreground">
-                      Total Submissions
-                    </div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold">94%</div>
-                    <div className="text-sm text-muted-foreground">
-                      Completion Rate
-                    </div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold">2.3s</div>
-                    <div className="text-sm text-muted-foreground">
-                      Avg. Load Time
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </CardContent>
             </Card>

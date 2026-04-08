@@ -48,7 +48,6 @@ export function OnboardingWizard({
       const data = await response.json();
       if (data.success) {
         setProgress(data);
-        // Find the first incomplete step
         const incompleteStep = data.progress.findIndex(
           (p: any) => !p.completed && !p.skipped
         );
@@ -149,40 +148,50 @@ export function OnboardingWizard({
   const canSkip = progress?.progress?.[currentStep]?.step?.required === false;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="relative w-full max-w-2xl mx-4 bg-white rounded-lg shadow-xl">
-        {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-              <Icon name="zap" className="w-4 h-4 text-blue-600" />
-            </div>
-            <div>
-              <h2 className="text-lg font-semibold">
-                Welcome to Your SaaS Platform
-              </h2>
-              <p className="text-sm text-gray-500">Let's get you set up</p>
-            </div>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
+      <div
+        className="absolute inset-0 bg-background/70 backdrop-blur-sm"
+        aria-hidden
+      />
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="onboarding-title"
+        className="relative flex max-h-[min(88vh,36rem)] w-full max-w-md flex-col overflow-hidden rounded-2xl border border-border bg-card text-card-foreground shadow-2xl shadow-black/10"
+      >
+        <div className="flex shrink-0 items-start justify-between gap-3 border-b border-border/80 px-5 py-4">
+          <div className="min-w-0 space-y-0.5">
+            <p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
+              Setup
+            </p>
+            <h2
+              id="onboarding-title"
+              className="truncate text-base font-semibold text-foreground"
+            >
+              Welcome
+            </h2>
+            <p className="text-xs text-muted-foreground">
+              A few quick steps to get you started.
+            </p>
           </div>
           <Button
             variant="ghost"
             size="sm"
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600"
+            className="h-8 w-8 shrink-0 p-0 text-muted-foreground hover:text-foreground"
+            aria-label="Close onboarding"
           >
-            <Icon name="x" className="w-4 h-4" />
+            <Icon name="x" className="h-4 w-4" />
           </Button>
         </div>
 
-        {/* Progress Bar */}
         <OnboardingProgress
           currentStep={currentStep}
           totalSteps={ONBOARDING_STEPS.length}
           progress={progress}
         />
 
-        {/* Step Content */}
-        <div className="p-6">
+        <div className="min-h-0 flex-1 overflow-y-auto px-5 py-5">
           <CurrentStepComponent
             onComplete={handleStepComplete}
             onSkip={handleSkip}
@@ -191,44 +200,54 @@ export function OnboardingWizard({
           />
         </div>
 
-        {/* Footer */}
-        <div className="flex items-center justify-between p-6 border-t bg-gray-50">
-          <div className="flex gap-2">
+        <div className="flex shrink-0 flex-col-reverse gap-2 border-t border-border/80 bg-muted/30 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-wrap gap-2">
             {currentStep > 0 && (
               <Button
                 variant="outline"
+                size="sm"
                 onClick={handlePrevious}
                 disabled={loading}
               >
-                <Icon name="arrow-left" className="w-4 h-4 mr-2" />
-                Previous
+                <Icon name="arrow-left" className="h-3.5 w-3.5" />
+                Back
               </Button>
             )}
             {canSkip && (
-              <Button variant="ghost" onClick={handleSkip} disabled={loading}>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleSkip}
+                disabled={loading}
+              >
                 Skip
               </Button>
             )}
           </div>
 
-          <div className="flex gap-2">
-            <Button variant="outline" onClick={onClose} disabled={loading}>
-              I'll do this later
+          <div className="flex flex-wrap gap-2 sm:justify-end">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onClose}
+              disabled={loading}
+            >
+              Later
             </Button>
             {isLastStep && (
-              <Button onClick={handleComplete} disabled={loading}>
+              <Button size="sm" onClick={handleComplete} disabled={loading}>
                 {loading ? (
                   <>
                     <Icon
                       name="refresh-cw"
-                      className="w-4 h-4 mr-2 animate-spin"
+                      className="h-3.5 w-3.5 animate-spin"
                     />
-                    Completing...
+                    Finishing…
                   </>
                 ) : (
                   <>
-                    <Icon name="check" className="w-4 h-4 mr-2" />
-                    Complete Setup
+                    <Icon name="check" className="h-3.5 w-3.5" />
+                    Done
                   </>
                 )}
               </Button>

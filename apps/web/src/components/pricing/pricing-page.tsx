@@ -151,9 +151,9 @@ export function PricingPage() {
               </div>
             )}
             <CardHeader className="text-center">
-              <CardTitle className="text-xl">{plan.title}</CardTitle>
+              <CardTitle className="text-base">{plan.title}</CardTitle>
               <div className="space-y-1">
-                <div className="text-3xl font-bold">
+                <div className="text-xl font-semibold tabular-nums">
                   {isYearly ? plan.price.yearly : plan.price.monthly}
                 </div>
                 {plan.price.monthly !== "Free" &&

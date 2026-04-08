@@ -123,20 +123,18 @@ export default function OrganizationsPage() {
               </Button>
             </div>
           </header>
-          <div className="flex flex-1 flex-col gap-6 p-6 pt-0">
-            {/* Header */}
-            <div className="space-y-2">
-              <h1 className="text-3xl font-bold tracking-tight">
+          <div className="flex flex-1 flex-col gap-4 p-4 pt-0 sm:gap-5 sm:p-6">
+            <div className="space-y-1">
+              <h1 className="text-xl font-semibold tracking-tight">
                 Organizations
               </h1>
-              <p className="text-muted-foreground">
-                Manage all your organizations and team members
+              <p className="max-w-lg text-sm text-muted-foreground">
+                Workspaces you belong to and create.
               </p>
             </div>
 
-            {/* Organizations Grid */}
             {memberships.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {memberships.map((membership: any) => (
                   <OrganizationCard
                     key={membership.organization.id}

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Button, Input, Label } from "@acmecorp/ui";
 import { Icon } from "@acmecorp/icons";
+import { cn } from "@/lib/utils";
 
 interface OnboardingInviteProps {
   onComplete: (data?: any) => void;
@@ -44,22 +45,20 @@ export function OnboardingInvite({
   };
 
   return (
-    <div className="space-y-6">
-      <div className="text-center space-y-2">
-        <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto">
-          <Icon name="mail" className="w-6 h-6 text-orange-600" />
+    <div className="space-y-5">
+      <div className="text-center">
+        <div className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-orange-500/10">
+          <Icon name="mail" className="h-4 w-4 text-orange-600 dark:text-orange-400" />
         </div>
-        <h3 className="text-xl font-semibold text-gray-900">
-          Invite Your Team
-        </h3>
-        <p className="text-gray-600">
-          Get your team onboard and start collaborating together.
+        <h3 className="text-base font-semibold text-foreground">Invite team</h3>
+        <p className="mt-1 text-xs text-muted-foreground">
+          Optional — you can always invite from Settings.
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="space-y-3">
-          <Label>Team Member Emails</Label>
+      <form onSubmit={handleSubmit} className="space-y-3 text-left">
+        <div className="space-y-2">
+          <Label className="text-xs">Email addresses</Label>
           {emails.map((email, index) => (
             <div key={index} className="flex gap-2">
               <Input
@@ -75,9 +74,9 @@ export function OnboardingInvite({
                   variant="outline"
                   size="sm"
                   onClick={() => handleRemoveEmail(index)}
-                  className="px-3"
+                  className="shrink-0 px-2"
                 >
-                  <Icon name="trash2" className="w-4 h-4" />
+                  <Icon name="trash2" className="h-3.5 w-3.5" />
                 </Button>
               )}
             </div>
@@ -87,57 +86,59 @@ export function OnboardingInvite({
             variant="outline"
             onClick={handleAddEmail}
             className="w-full"
+            size="sm"
           >
-            <Icon name="plus" className="w-4 h-4 mr-2" />
-            Add Another Email
+            <Icon name="plus" className="h-3.5 w-3.5" />
+            Add email
           </Button>
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="message">Personal Message (Optional)</Label>
+        <div className="space-y-1.5">
+          <Label htmlFor="message" className="text-xs">
+            Note (optional)
+          </Label>
           <textarea
             id="message"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            placeholder="Add a personal message to your invitation..."
-            rows={3}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Short message for the invite…"
+            rows={2}
+            className={cn(
+              "flex min-h-[3.5rem] w-full resize-none rounded-md border border-input bg-background px-3 py-2 text-sm",
+              "placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            )}
           />
         </div>
 
-        <div className="bg-blue-50 p-4 rounded-lg">
-          <div className="flex items-start gap-3">
-            <Icon name="info" className="w-5 h-5 text-blue-600 mt-0.5" />
-            <div>
-              <h4 className="font-medium text-blue-900">What happens next?</h4>
-              <p className="text-sm text-blue-700">
-                Your team members will receive an email invitation. They can
-                join your organization and start collaborating immediately.
-              </p>
-            </div>
-          </div>
+        <div className="flex items-start gap-2 rounded-lg border border-border bg-muted/30 px-3 py-2">
+          <Icon name="info" className="mt-0.5 h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+          <p className="text-[11px] leading-relaxed text-muted-foreground">
+            Invites are sent by email. Recipients join your organization from
+            the link.
+          </p>
         </div>
 
-        <div className="pt-4 flex gap-3">
+        <div className="flex gap-2">
           <Button
             type="button"
             variant="outline"
             onClick={onSkip}
             disabled={loading}
             className="flex-1"
+            size="sm"
           >
-            Skip for now
+            Skip
           </Button>
-          <Button type="submit" disabled={loading} className="flex-1">
+          <Button type="submit" disabled={loading} className="flex-1" size="sm">
             {loading ? (
               <>
-                <Icon name="refresh-cw" className="w-4 h-4 mr-2 animate-spin" />
-                Sending invites...
+                <Icon name="refresh-cw" className="h-3.5 w-3.5 animate-spin" />
+                Sending…
               </>
             ) : (
               <>
-                Send Invitations
-                <Icon name="arrow-right" className="w-4 h-4 ml-2" />
+                Send invites
+                <Icon name="arrow-right" className="h-3.5 w-3.5" />
               </>
             )}
           </Button>

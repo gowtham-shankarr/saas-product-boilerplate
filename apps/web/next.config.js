@@ -6,16 +6,8 @@ const __dirname = path.dirname(__filename);
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Enable React Strict Mode for better development experience
   reactStrictMode: true,
-
-  // Enable SWC minification for better performance
-  swcMinify: true,
-
-  // Enable experimental features
-  experimental: {
-    typedRoutes: true,
-  },
+  typedRoutes: true,
   async headers() {
     return [
       {
@@ -146,15 +138,38 @@ const nextConfig = {
 
   // Image optimization configuration
   images: {
-    // Allow external image domains (add your trusted domains)
-    domains: [
-      "localhost",
-      "yourdomain.com", // Add your production domain
-      "avatars.githubusercontent.com", // GitHub avatars
-      "lh3.googleusercontent.com", // Google avatars
-      "platform-lookaside.fbsbx.com", // Facebook avatars
-      "res.cloudinary.com", // Cloudinary (if using)
-      "images.unsplash.com", // Unsplash (if using)
+    remotePatterns: [
+      { protocol: "http", hostname: "localhost", pathname: "/**" },
+      {
+        protocol: "https",
+        hostname: "yourdomain.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "avatars.githubusercontent.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "platform-lookaside.fbsbx.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+        pathname: "/**",
+      },
     ],
     // Enable image optimization
     formats: ["image/webp", "image/avif"],

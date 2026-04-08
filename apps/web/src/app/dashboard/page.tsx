@@ -86,21 +86,19 @@ export default async function DashboardPage() {
               </Breadcrumb>
             </div>
           </header>
-          <div className="flex flex-1 flex-col gap-6 p-6 pt-0">
-            {/* Welcome Section */}
-            <div className="space-y-2">
-              <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-              <p className="text-muted-foreground">
-                Welcome back, {session.user?.name || session.user?.email}!
-                Here's what's happening with your projects today.
+          <div className="flex flex-1 flex-col gap-4 p-4 pt-0 sm:gap-5 sm:p-6">
+            <div className="space-y-1">
+              <h1 className="text-xl font-semibold tracking-tight">Dashboard</h1>
+              <p className="max-w-xl text-sm text-muted-foreground">
+                Welcome back, {session.user?.name || session.user?.email}. Here
+                is a quick overview of your workspace.
               </p>
             </div>
 
-            {/* Organization Info */}
-            <Card className="mb-8">
+            <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Building2 className="h-5 w-5" />
+                <CardTitle className="flex items-center gap-2 text-base">
+                  <Building2 className="h-4 w-4 text-muted-foreground" />
                   {organization.name}
                 </CardTitle>
                 <CardDescription>
@@ -126,12 +124,12 @@ export default async function DashboardPage() {
             </Card>
 
             {/* Quick Actions */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
               <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Users className="h-5 w-5" />
-                    Team Members
+                  <CardTitle className="flex items-center gap-2 text-base">
+                    <Users className="h-4 w-4 text-muted-foreground" />
+                    Team
                   </CardTitle>
                   <CardDescription>
                     Manage your team and invite new members
@@ -149,9 +147,9 @@ export default async function DashboardPage() {
 
               <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Settings className="h-5 w-5" />
-                    Organization Settings
+                  <CardTitle className="flex items-center gap-2 text-base">
+                    <Settings className="h-4 w-4 text-muted-foreground" />
+                    Settings
                   </CardTitle>
                   <CardDescription>
                     Configure your organization settings
@@ -169,9 +167,9 @@ export default async function DashboardPage() {
 
               <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Plus className="h-5 w-5" />
-                    Create New
+                  <CardTitle className="flex items-center gap-2 text-base">
+                    <Plus className="h-4 w-4 text-muted-foreground" />
+                    New
                   </CardTitle>
                   <CardDescription>
                     Start a new project or feature
@@ -189,24 +187,24 @@ export default async function DashboardPage() {
             </div>
 
             {/* Recent Activity */}
-            <Card className="mt-8">
+            <Card className="mt-2">
               <CardHeader>
-                <CardTitle>Recent Activity</CardTitle>
+                <CardTitle>Recent activity</CardTitle>
                 <CardDescription>
                   Latest updates from your organization
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  <div className="flex items-center gap-4 p-4 border rounded-lg">
-                    <div className="h-2 w-2 bg-green-500 rounded-full"></div>
-                    <div>
-                      <p className="font-medium">Organization created</p>
-                      <p className="text-sm text-muted-foreground">
+                  <div className="flex items-center gap-3 rounded-lg border border-border/80 p-3">
+                    <div className="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500" />
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm font-medium">Organization created</p>
+                      <p className="text-xs text-muted-foreground">
                         {organization.name} was created
                       </p>
                     </div>
-                    <span className="text-sm text-muted-foreground ml-auto">
+                    <span className="shrink-0 text-xs text-muted-foreground">
                       {new Date(organization.createdAt).toLocaleDateString()}
                     </span>
                   </div>

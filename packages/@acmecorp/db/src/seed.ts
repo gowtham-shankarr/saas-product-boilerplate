@@ -20,22 +20,21 @@ async function main() {
     create: {
       name: "Test Organization",
       slug: "test-org",
-      description: "A test organization for development",
     },
   });
 
   // Create membership
   await db.membership.upsert({
     where: {
-      userId_organizationId: {
+      userId_orgId: {
         userId: user.id,
-        organizationId: organization.id,
+        orgId: organization.id,
       },
     },
     update: {},
     create: {
       userId: user.id,
-      organizationId: organization.id,
+      orgId: organization.id,
       role: "owner",
     },
   });
